@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="es" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculadora de Precios</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="header">
+        <h1>Calculadora de Precios y Ganancias</h1>
+        <div class="header-controls">
+            <select id="moneda" class="currency-select">
+                <option value="MXN">MXN - Peso Mexicano</option>
+                <option value="USD">USD - Dólar Americano</option>
+                <option value="EUR">EUR - Euro</option>
+                <option value="COP">COP - Peso Colombiano</option>
+            </select>
+            <button class="theme-toggle" onclick="toggleTheme()">🌙</button>
+            <button class="info-btn" onclick="mostrarInfo()">i</button>
+        </div>
+    </div>
+
+    <div class="modal" id="infoModal">
+        <div class="modal-content">
+            <span class="close-btn" onclick="cerrarInfo()">&times;</span>
+            <div class="modal-scroll">
+                <section class="info-section">
+                    <h2>Guía de la Aplicación</h2>
+                    <p class="info-intro">Esta herramienta te ayuda a calcular precios y gestionar costos de tus productos de manera profesional.</p>
+                </section>
+
+                <section class="info-section">
+                    <h3>Características Principales</h3>
+                    <ul>
+                        <li><strong>Múltiples Monedas:</strong> Soporte para MXN, USD, EUR y COP</li>
+                        <li><strong>Modo Oscuro/Claro:</strong> Interfaz adaptable a tus preferencias</li>
+                        <li><strong>Almacenamiento Local:</strong> Guarda y recupera tus productos</li>
+                        <li><strong>Exportación PDF:</strong> Genera reportes profesionales</li>
+                    </ul>
+                </section>
+
+                <section class="info-section">
+                    <h3>Cálculo de Costos</h3>
+                    <div class="info-grid">
+                        <div class="info-item">
+                            <h4>Costos Básicos</h4>
+                            <p>Materia prima y costos fundamentales del producto</p>
+                        </div>
+                        <div class="info-item">
+                            <h4>Costos Adicionales</h4>
+                            <ul>
+                                <li>Empaque</li>
+                                <li>Mano de obra</li>
+                                <li>Envío</li>
+                                <li>Marketing</li>
+                            </ul>
+                        </div>
+                    </div>
+                </section>
+
+                <section class="info-section">
+                    <h3>Cómo Usar</h3>
+                    <ol class="steps-list">
+                        <li>Selecciona tu moneda preferida</li>
+                        <li>Ingresa los costos del producto</li>
+                        <li>Define el margen de ganancia</li>
+                        <li>Establece el porcentaje de impuestos</li>
+                        <li>Indica las ventas esperadas</li>
+                        <li>Presiona "Calcular" para ver resultados</li>
+                    </ol>
+                </section>
+
+                <section class="info-section">
+                    <h3>Gestión de Productos</h3>
+                    <ul class="feature-list">
+                        <li><strong>Guardar:</strong> Almacena productos para uso futuro</li>
+                        <li><strong>Cargar:</strong> Recupera productos guardados</li>
+                        <li><strong>Eliminar:</strong> Gestiona tu lista de productos</li>
+                        <li><strong>Exportar:</strong> Genera reportes en PDF</li>
+                    </ul>
+                </section>
+            </div>
+        </div>
+    </div>
+
+    <div class="costos-section">
+        <h2>Costos Básicos</h2>
+        <div class="form-group">
+            <label for="costoMP">Costo de Materia Prima:</label>
+            <input type="number" id="costoMP" step="0.01" required>
+        </div>
+
+        <h2>Costos Adicionales</h2>
+        <div class="form-group">
+            <label for="costoEmpaque">Costo de Empaque:</label>
+            <input type="number" id="costoEmpaque" step="0.01" value="0">
+        </div>
+
+        <div class="form-group">
+            <label for="costoManoObra">Costo de Mano de Obra:</label>
+            <input type="number" id="costoManoObra" step="0.01" value="0">
+        </div>
+
+        <div class="form-group">
+            <label for="costoEnvio">Gastos de Envío:</label>
+            <input type="number" id="costoEnvio" step="0.01" value="0">
+        </div>
+
+        <div class="form-group">
+            <label for="costoMarketing">Costos de Marketing:</label>
+            <input type="number" id="costoMarketing" step="0.01" value="0">
+        </div>
+
+        <h2>Márgenes e Impuestos</h2>
+        <div class="form-group">
+            <label for="margen">Margen de Ganancia (%):</label>
+            <input type="number" id="margen" step="0.01" required>
+        </div>
+
+        <div class="form-group">
+            <label for="impuestos">Impuestos (%):</label>
+            <input type="number" id="impuestos" step="0.01" required>
+        </div>
+
+        <div class="form-group">
+            <label for="ventas">Ventas Esperadas:</label>
+            <input type="number" id="ventas" required>
+        </div>
+    </div>
+
+    <button class="calcular-btn" onclick="calcular()">Calcular</button>
+
+    <div id="resultados">
+        <h3>Resultados:</h3>
+        <div class="desglose">
+            <p>Costo Total Base: <span id="costoBase"></span></p>
+            <p>Total Costos Adicionales: <span id="costosAdicionales"></span></p>
+            <p>Precio Final Sugerido: <span id="precioFinal"></span></p>
+            <p>Ganancia Total Esperada: <span id="gananciaTotal"></span></p>
+        </div>
+    </div>
+
+    <div class="productos-guardados">
+        <h3>Productos Guardados</h3>
+        <div id="listaProductos" class="productos-lista">
+            <!-- Aquí se mostrarán los productos guardados -->
+        </div>
+    </div>
+
+    <div class="action-buttons">
+        <button class="action-btn save-btn" onclick="guardarProducto()">Guardar Producto</button>
+        <button class="action-btn export-btn" onclick="exportarDatos()">Exportar a PDF</button>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html> 
